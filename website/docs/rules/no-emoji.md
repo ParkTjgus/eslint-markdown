@@ -19,11 +19,15 @@ For a full list of supported emojis, refer to:
 
 Platforms like [GitHub](https://github.com) and Markdown plugins such as [`remark-emoji`](https://github.com/rhysd/remark-emoji#readme) and [`markdown-it-emoji`](https://github.com/markdown-it/markdown-it-emoji#readme) also support this shortcode feature.
 
+By default, this rule disallows only raw emojis. If your project prefers raw emojis instead, set the [`style`](#style) option to `['gemoji']` to disallow `:smiley:`-style shortcodes. To disallow both raw emojis and shortcodes, set it to `['emoji', 'gemoji']`.
+
 ## Examples
 
 ### :x: Incorrect {#incorrect}
 
 Examples of **incorrect** code for this rule:
+
+#### Default
 
 ```md eslint-check
 <!-- eslint md/no-emoji: 'error' -->
@@ -33,9 +37,30 @@ Unicorn 🦄
 +1 👍
 ```
 
+#### With `{ style: ['gemoji'] }` Option
+
+```md eslint-check
+<!-- eslint md/no-emoji: ['error', { style: ['gemoji'] }] -->
+
+Smiley :smiley:
+Unicorn :unicorn:
++1 :+1:
+```
+
+#### With `{ style: ['emoji', 'gemoji'] }` Option
+
+```md eslint-check
+<!-- eslint md/no-emoji: ['error', { style: ['emoji', 'gemoji'] }] -->
+
+Smiley 😃
+Unicorn :unicorn:
+```
+
 ### :white_check_mark: Correct {#correct}
 
 Examples of **correct** code for this rule:
+
+#### Default
 
 ```md eslint-check
 <!-- eslint md/no-emoji: 'error' -->
@@ -55,11 +80,31 @@ Unicorn 🦄
 +1 :+1:
 ```
 
+#### With `{ style: ['gemoji'] }` Option
+
+```md eslint-check
+<!-- eslint md/no-emoji: ['error', { style: ['gemoji'] }] -->
+
+Smiley 😃
+Unicorn 🦄
++1 👍
+```
+
+#### With `{ style: ['emoji', 'gemoji'], allow: ['😃', ':unicorn:'] }` Option
+
+```md eslint-check
+<!-- eslint md/no-emoji: ['error', { style: ['emoji', 'gemoji'], allow: ['😃', ':unicorn:'] }] -->
+
+Smiley 😃
+Unicorn :unicorn:
+```
+
 ## Options
 
 ```js
 'md/no-emoji': ['error', {
   allow: [],
+  style: ['emoji'],
 }]
 ```
 
@@ -67,8 +112,19 @@ Unicorn 🦄
 
 > Type: `string[]` / Default: `[]`
 
-When specified, specific emoji sequences are allowed if they match one of the strings in this array. This is useful when a document intentionally uses a small set of raw Unicode emojis while still disallowing all others.
+When specified, specific emojis are allowed if they match one of the strings in this array. Raw Unicode emojis (e.g. `'😃'`) and shortcodes (e.g. `':smiley:'`) can both be listed, and the list applies to every style enabled by the [`style`](#style) option.
+
+### `style`
+
+> Type: `('emoji' | 'gemoji')[]` / Default: `['emoji']`
+
+Specifies which styles of emojis to disallow. Each style is checked independently.
+
+- `'emoji'`: Disallows raw Unicode emojis (e.g. `😃`).
+- `'gemoji'`: Disallows shortcode style emojis (e.g. `:smile:`).
 
 ## Limitations
 
-This rule uses `/\p{RGI_Emoji}/gv` internally to match emojis. Unicode property escapes rely on the Unicode data/version supported by the runtime, so matches can vary across environments. Also, `RGI_Emoji` targets only Unicode's "Recommended for General Interchange" emoji set, so it may not match some non-RGI or emoji-like sequences.
+The `'emoji'` style uses `/\p{RGI_Emoji}/gv` internally to match emojis. Unicode property escapes rely on the Unicode data/version supported by the runtime, so matches can vary across environments. Also, `RGI_Emoji` targets only Unicode's "Recommended for General Interchange" emoji set, so it may not match some non-RGI or emoji-like sequences.
+
+The `'gemoji'` style matches the `:name:` pattern instead of checking against an actual list of emoji names. As a result, text that merely looks like a shortcode, such as `:min:` in `hour:min:sec`, is also reported.

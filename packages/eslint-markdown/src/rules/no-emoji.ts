@@ -7,7 +7,7 @@
 // Import
 // --------------------------------------------------------------------------------
 
-import { URL_RULE_DOCS } from '../core/constants.js';
+import { URL_RULE_DOCS, gemojiRegex } from '../core/constants.js';
 import type { RuleModule } from '../core/types.js';
 
 // --------------------------------------------------------------------------------
@@ -22,10 +22,18 @@ type RuleOptions = [
     /**
      * When specified, specific emoji sequences are allowed if they match one of the strings in this array.
      *
-     * This is useful when a document intentionally uses a small set of raw Unicode emojis while still disallowing all others.
+     * This is useful when a document intentionally uses a small set of raw Unicode emojis or shortcode style emojis while still disallowing all others.
      * @default []
      */
     allow: string[];
+    /**
+     * Specifies the style of emojis to disallow.
+     *
+     * - `'emoji'`: Raw Unicode emojis (`😃`).
+     * - `'gemoji'`: Shortcode style emojis (`:smiley:`).
+     * @default ['emoji']
+     */
+    style: ('emoji' | 'gemoji')[];
   },
 ];
 type MessageIds = 'noEmoji';
@@ -35,6 +43,7 @@ type MessageIds = 'noEmoji';
 // --------------------------------------------------------------------------------
 
 const emojiRegex = /\p{RGI_Emoji}/gv;
+const gemojiGlobalRegex = new RegExp(gemojiRegex.source, 'g');
 
 // --------------------------------------------------------------------------------
 // Rule Definition
@@ -62,6 +71,14 @@ export default {
             },
             uniqueItems: true,
           },
+          style: {
+            type: 'array',
+            items: {
+              enum: ['emoji', 'gemoji'],
+            },
+            minItems: 1,
+            uniqueItems: true,
+          },
         },
         additionalProperties: false,
       },
@@ -70,6 +87,7 @@ export default {
     defaultOptions: [
       {
         allow: [],
+        style: ['emoji'],
       },
     ],
 
@@ -84,12 +102,16 @@ export default {
 
   create(context) {
     const { sourceCode } = context;
-    const [{ allow }] = context.options;
+    const [{ allow, style }] = context.options;
 
     return {
       text(node) {
         const [nodeStartOffset] = sourceCode.getRange(node);
-        const matches = sourceCode.getText(node).matchAll(emojiRegex);
+        const text = sourceCode.getText(node);
+        const matches = [
+          ...(style.includes('emoji') ? text.matchAll(emojiRegex) : []),
+          ...(style.includes('gemoji') ? text.matchAll(gemojiGlobalRegex) : []),
+        ];
 
         for (const match of matches) {
           const emoji = match[0];
