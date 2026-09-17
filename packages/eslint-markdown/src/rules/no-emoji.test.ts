@@ -53,50 +53,40 @@ ruleTester('no-emoji', rule, {
       code: 'Hello, :smile:!',
     },
     {
-      name: "`style: ['emoji']`: Allow emoji shortcode",
+      name: "`style: 'emoji'`: Allow emoji shortcode",
       code: 'Hello, :smile:!',
       options: [
         {
-          style: ['emoji'],
+          style: 'emoji',
         },
       ],
     },
     {
-      name: "`style: ['emoji']`: Allow raw emoji listed in `allow`",
+      name: "`style: 'emoji'`: Allow raw emoji listed in `allow`",
       code: 'Hello, 😄!',
       options: [
         {
-          style: ['emoji'],
+          style: 'emoji',
           allow: ['😄'],
         },
       ],
     },
     {
-      name: "`style: ['gemoji']`: Allow raw emoji",
+      name: "`style: 'gemoji'`: Allow raw emoji",
       code: 'Hello, 😄!',
       options: [
         {
-          style: ['gemoji'],
+          style: 'gemoji',
         },
       ],
     },
     {
-      name: "`style: ['gemoji']`: Allow emoji shortcode listed in `allow`",
+      name: "`style: 'gemoji'`: Allow emoji shortcode listed in `allow`",
       code: 'Hello, :smile:!',
       options: [
         {
-          style: ['gemoji'],
+          style: 'gemoji',
           allow: [':smile:'],
-        },
-      ],
-    },
-    {
-      name: "`style: ['emoji', 'gemoji']`: Allow raw emoji and emoji shortcode listed in `allow`",
-      code: 'Hello, 😄 and :smile:!',
-      options: [
-        {
-          style: ['emoji', 'gemoji'],
-          allow: ['😄', ':smile:'],
         },
       ],
     },
@@ -197,11 +187,11 @@ ruleTester('no-emoji', rule, {
     },
     {
       // 😃's length is 2.
-      name: "`style: ['emoji']`: Disallow raw emoji",
+      name: "`style: 'emoji'`: Disallow raw emoji",
       code: 'Hello, 😃!',
       options: [
         {
-          style: ['emoji'],
+          style: 'emoji',
         },
       ],
       errors: [
@@ -216,11 +206,11 @@ ruleTester('no-emoji', rule, {
     },
     {
       // :smile:'s length is 7.
-      name: "`style: ['gemoji']`: Disallow emoji shortcode",
+      name: "`style: 'gemoji'`: Disallow emoji shortcode",
       code: 'Hello, :smile:!',
       options: [
         {
-          style: ['gemoji'],
+          style: 'gemoji',
         },
       ],
       errors: [
@@ -235,11 +225,11 @@ ruleTester('no-emoji', rule, {
     },
     {
       // :smile:'s length is 7, :+1:'s length is 4.
-      name: "`style: ['gemoji']`: Disallow adjacent emoji shortcodes",
+      name: "`style: 'gemoji'`: Disallow adjacent emoji shortcodes",
       code: ':smile::+1:',
       options: [
         {
-          style: ['gemoji'],
+          style: 'gemoji',
         },
       ],
       errors: [
@@ -260,12 +250,12 @@ ruleTester('no-emoji', rule, {
       ],
     },
     {
-      name: "`style: ['gemoji']`: Disallow multi-line emoji shortcodes",
+      name: "`style: 'gemoji'`: Disallow multi-line emoji shortcodes",
       code: `Hi, :smile:
   :+1:!`,
       options: [
         {
-          style: ['gemoji'],
+          style: 'gemoji',
         },
       ],
       errors: [
@@ -286,11 +276,11 @@ ruleTester('no-emoji', rule, {
       ],
     },
     {
-      name: "`style: ['gemoji']`: Disallow emoji shortcode not listed in `allow`",
+      name: "`style: 'gemoji'`: Disallow emoji shortcode not listed in `allow`",
       code: 'Hello, :smile: and :+1:!',
       options: [
         {
-          style: ['gemoji'],
+          style: 'gemoji',
           allow: [':smile:'],
         },
       ],
@@ -301,69 +291,6 @@ ruleTester('no-emoji', rule, {
           column: 20,
           endLine: 1,
           endColumn: 24,
-        },
-      ],
-    },
-    {
-      name: "`style: ['emoji', 'gemoji']`: Disallow raw emoji and emoji shortcode",
-      code: 'Hello, 😄 and :+1:!',
-      options: [
-        {
-          style: ['emoji', 'gemoji'],
-        },
-      ],
-      errors: [
-        {
-          messageId: 'noEmoji',
-          line: 1,
-          column: 8,
-          endLine: 1,
-          endColumn: 10,
-        },
-        {
-          messageId: 'noEmoji',
-          line: 1,
-          column: 15,
-          endLine: 1,
-          endColumn: 19,
-        },
-      ],
-    },
-    {
-      name: "`style: ['emoji', 'gemoji']`: Disallow emoji shortcode when only a raw emoji is listed in `allow`",
-      code: 'Hello, 😄 and :smile:!',
-      options: [
-        {
-          style: ['emoji', 'gemoji'],
-          allow: ['😄'],
-        },
-      ],
-      errors: [
-        {
-          messageId: 'noEmoji',
-          line: 1,
-          column: 15,
-          endLine: 1,
-          endColumn: 22,
-        },
-      ],
-    },
-    {
-      name: "`style: ['emoji', 'gemoji']`: Disallow raw emoji when only an emoji shortcode is listed in `allow`",
-      code: 'Hello, 😄 and :smile:!',
-      options: [
-        {
-          style: ['emoji', 'gemoji'],
-          allow: [':smile:'],
-        },
-      ],
-      errors: [
-        {
-          messageId: 'noEmoji',
-          line: 1,
-          column: 8,
-          endLine: 1,
-          endColumn: 10,
         },
       ],
     },

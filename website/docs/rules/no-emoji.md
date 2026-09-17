@@ -19,7 +19,7 @@ For a full list of supported emojis, refer to:
 
 Platforms like [GitHub](https://github.com) and Markdown plugins such as [`remark-emoji`](https://github.com/rhysd/remark-emoji#readme) and [`markdown-it-emoji`](https://github.com/markdown-it/markdown-it-emoji#readme) also support this shortcode feature.
 
-By default, this rule disallows only raw emojis. If your project prefers raw emojis instead, set the [`style`](#style) option to `['gemoji']` to disallow `:smiley:`-style shortcodes. To disallow both raw emojis and shortcodes, set it to `['emoji', 'gemoji']`.
+By default, this rule disallows raw emojis. If your project prefers raw emojis instead, set the [`style`](#style) option to `'gemoji'` to disallow `:smiley:`-style shortcodes.
 
 ## Examples
 
@@ -37,23 +37,14 @@ Unicorn 🦄
 +1 👍
 ```
 
-#### With `{ style: ['gemoji'] }` Option
+#### With `{ style: 'gemoji' }` Option
 
 ```md eslint-check
-<!-- eslint md/no-emoji: ['error', { style: ['gemoji'] }] -->
+<!-- eslint md/no-emoji: ['error', { style: 'gemoji' }] -->
 
 Smiley :smiley:
 Unicorn :unicorn:
 +1 :+1:
-```
-
-#### With `{ style: ['emoji', 'gemoji'] }` Option
-
-```md eslint-check
-<!-- eslint md/no-emoji: ['error', { style: ['emoji', 'gemoji'] }] -->
-
-Smiley 😃
-Unicorn :unicorn:
 ```
 
 ### :white_check_mark: Correct {#correct}
@@ -70,6 +61,16 @@ Unicorn :unicorn:
 +1 :+1:
 ```
 
+#### With `{ style: 'gemoji' }` Option
+
+```md eslint-check
+<!-- eslint md/no-emoji: ['error', { style: 'gemoji' }] -->
+
+Smiley 😃
+Unicorn 🦄
++1 👍
+```
+
 #### With `{ allow: ['😃', '🦄'] }` Option
 
 ```md eslint-check
@@ -80,20 +81,10 @@ Unicorn 🦄
 +1 :+1:
 ```
 
-#### With `{ style: ['gemoji'] }` Option
+#### With `{ style: 'gemoji', allow: [':unicorn:'] }` Option
 
 ```md eslint-check
-<!-- eslint md/no-emoji: ['error', { style: ['gemoji'] }] -->
-
-Smiley 😃
-Unicorn 🦄
-+1 👍
-```
-
-#### With `{ style: ['emoji', 'gemoji'], allow: ['😃', ':unicorn:'] }` Option
-
-```md eslint-check
-<!-- eslint md/no-emoji: ['error', { style: ['emoji', 'gemoji'], allow: ['😃', ':unicorn:'] }] -->
+<!-- eslint md/no-emoji: ['error', { style: 'gemoji', allow: [':unicorn:'] }] -->
 
 Smiley 😃
 Unicorn :unicorn:
@@ -104,7 +95,7 @@ Unicorn :unicorn:
 ```js
 'md/no-emoji': ['error', {
   allow: [],
-  style: ['emoji'],
+  style: 'emoji',
 }]
 ```
 
@@ -112,16 +103,16 @@ Unicorn :unicorn:
 
 > Type: `string[]` / Default: `[]`
 
-When specified, specific emojis are allowed if they match one of the strings in this array. Raw Unicode emojis (e.g. `'😃'`) and shortcodes (e.g. `':smiley:'`) can both be listed, and the list applies to every style enabled by the [`style`](#style) option.
+When specified, specific emojis are allowed if they match one of the strings in this array. List raw Unicode emojis (e.g. `'😃'`) when [`style`](#style) is `'emoji'`, and shortcodes (e.g. `':smiley:'`) when it is `'gemoji'`.
 
 ### `style`
 
-> Type: `('emoji' | 'gemoji')[]` / Default: `['emoji']`
+> Type: `'emoji' | 'gemoji'` / Default: `'emoji'`
 
-Specifies which styles of emojis to disallow. Each style is checked independently.
+Specifies which style of emojis to disallow.
 
 - `'emoji'`: Disallows raw Unicode emojis (e.g. `😃`).
-- `'gemoji'`: Disallows shortcode style emojis (e.g. `:smile:`).
+- `'gemoji'`: Disallows shortcode style emojis (e.g. `:smiley:`).
 
 ## Limitations
 

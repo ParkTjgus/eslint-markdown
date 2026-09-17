@@ -31,7 +31,7 @@ type RuleOptions = [
      *
      * - `'emoji'`: Raw Unicode emojis (`😃`).
      * - `'gemoji'`: Shortcode style emojis (`:smiley:`).
-     * @default ['emoji']
+     * @default 'emoji'
      */
     style: 'emoji' | 'gemoji';
   },
@@ -72,12 +72,7 @@ export default {
             uniqueItems: true,
           },
           style: {
-            type: 'array',
-            items: {
-              enum: ['emoji', 'gemoji'],
-            },
-            minItems: 1,
-            uniqueItems: true,
+            enum: ['emoji', 'gemoji'],
           },
         },
         additionalProperties: false,
@@ -87,7 +82,7 @@ export default {
     defaultOptions: [
       {
         allow: [],
-        style: ['emoji'],
+        style: 'emoji',
       },
     ],
 
@@ -107,11 +102,9 @@ export default {
     return {
       text(node) {
         const [nodeStartOffset] = sourceCode.getRange(node);
-        const text = sourceCode.getText(node);
-        const matches = [
-          ...(style.includes('emoji') ? text.matchAll(emojiRegex) : []),
-          ...(style.includes('gemoji') ? text.matchAll(gemojiGlobalRegex) : []),
-        ];
+        const matches = sourceCode
+          .getText(node)
+          .matchAll(style === 'emoji' ? emojiRegex : gemojiGlobalRegex);
 
         for (const match of matches) {
           const emoji = match[0];
