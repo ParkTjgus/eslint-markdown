@@ -22,7 +22,8 @@ type RuleOptions = [
     /**
      * When specified, specific emoji sequences are allowed if they match one of the strings in this array.
      *
-     * This is useful when a document intentionally uses a small set of raw Unicode emojis or shortcode style emojis while still disallowing all others.
+     * This is useful when a document intentionally uses a small set of raw Unicode emojis or shortcode style emojis
+     * while still disallowing all others. When `style` is `'gemoji'`, list shortcodes instead (e.g. `':smiley:'`).
      * @default []
      */
     allow: string[];

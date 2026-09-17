@@ -19,8 +19,6 @@ For a full list of supported emojis, refer to:
 
 Platforms like [GitHub](https://github.com) and Markdown plugins such as [`remark-emoji`](https://github.com/rhysd/remark-emoji#readme) and [`markdown-it-emoji`](https://github.com/markdown-it/markdown-it-emoji#readme) also support this shortcode feature.
 
-By default, this rule disallows raw emojis. If your project prefers raw emojis instead, set the [`style`](#style) option to `'gemoji'` to disallow `:smiley:`-style shortcodes.
-
 ## Examples
 
 ### :x: Incorrect {#incorrect}
@@ -103,7 +101,7 @@ Unicorn :unicorn:
 
 > Type: `string[]` / Default: `[]`
 
-When specified, specific emojis are allowed if they match one of the strings in this array. List raw Unicode emojis (e.g. `'😃'`) when [`style`](#style) is `'emoji'`, and shortcodes (e.g. `':smiley:'`) when it is `'gemoji'`.
+When specified, specific emoji sequences are allowed if they match one of the strings in this array. This is useful when a document intentionally uses a small set of raw Unicode emojis or shortcode style emojis while still disallowing all others. When [`style`](#style) is `'gemoji'`, list shortcodes instead (e.g. `':smiley:'`).
 
 ### `style`
 
