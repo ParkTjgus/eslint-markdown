@@ -49,7 +49,7 @@ ruleTester('no-emoji', rule, {
       ],
     },
     {
-      name: 'Default `style`: Allow emoji shortcode',
+      name: "`style: 'emoji'`: Default",
       code: 'Hello, :smile:!',
     },
     {
@@ -66,8 +66,8 @@ ruleTester('no-emoji', rule, {
       code: 'Hello, 😄!',
       options: [
         {
-          style: 'emoji',
           allow: ['😄'],
+          style: 'emoji',
         },
       ],
     },
@@ -85,8 +85,8 @@ ruleTester('no-emoji', rule, {
       code: 'Hello, :smile:!',
       options: [
         {
-          style: 'gemoji',
           allow: [':smile:'],
+          style: 'gemoji',
         },
       ],
     },
@@ -251,8 +251,7 @@ ruleTester('no-emoji', rule, {
     },
     {
       name: "`style: 'gemoji'`: Disallow multi-line emoji shortcodes",
-      code: `Hi, :smile:
-  :+1:!`,
+      code: `Hi, :smile:\n  :+1:!`,
       options: [
         {
           style: 'gemoji',
@@ -280,8 +279,8 @@ ruleTester('no-emoji', rule, {
       code: 'Hello, :smile: and :+1:!',
       options: [
         {
-          style: 'gemoji',
           allow: [':smile:'],
+          style: 'gemoji',
         },
       ],
       errors: [
