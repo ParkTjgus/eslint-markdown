@@ -33,7 +33,7 @@ type RuleOptions = [
      * - `'gemoji'`: Shortcode style emojis (`:smiley:`).
      * @default ['emoji']
      */
-    style: ('emoji' | 'gemoji')[];
+    style: 'emoji' | 'gemoji';
   },
 ];
 type MessageIds = 'noEmoji';
