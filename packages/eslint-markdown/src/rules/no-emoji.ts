@@ -7,7 +7,7 @@
 // Import
 // --------------------------------------------------------------------------------
 
-import { URL_RULE_DOCS, gemojiRegex } from '../core/constants.js';
+import { URL_RULE_DOCS, gemojiRegex as originalGemojiRegex } from '../core/constants.js';
 import type { RuleModule } from '../core/types.js';
 
 // --------------------------------------------------------------------------------
@@ -43,7 +43,7 @@ type MessageIds = 'noEmoji';
 // --------------------------------------------------------------------------------
 
 const emojiRegex = /\p{RGI_Emoji}/gv;
-const gemojiGlobalRegex = new RegExp(gemojiRegex.source, 'g');
+const gemojiRegex = new RegExp(originalGemojiRegex.source, 'g');
 
 // --------------------------------------------------------------------------------
 // Rule Definition
@@ -104,7 +104,7 @@ export default {
         const [nodeStartOffset] = sourceCode.getRange(node);
         const matches = sourceCode
           .getText(node)
-          .matchAll(style === 'emoji' ? emojiRegex : gemojiGlobalRegex);
+          .matchAll(style === 'emoji' ? emojiRegex : gemojiRegex);
 
         for (const match of matches) {
           const emoji = match[0];
